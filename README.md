@@ -43,12 +43,12 @@ Features:
          <div class="od-name">Item 2</div>
 
             <!-- Nested Item -->
-            <div class="od-item od-c-item nested">
+            <div class="od-item od-c-item od-nested">
                <div class="od-name">Item 2.1</div>
             </div>
 
             <!-- Nested Item -->
-            <div class="od-item od-c-item nested">
+            <div class="od-item od-c-item od-nested">
                <div class="od-name">Item 2.2</div>
             </div>
       </div>
