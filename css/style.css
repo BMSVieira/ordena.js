@@ -1,0 +1,46 @@
+
+.od-item.dragged {
+opacity: 0.5; 
+}
+
+.od-item {
+    margin-top: 9px;
+    padding: 13px 20px;
+    border: 1px solid;
+    min-height: 20px;
+    font-size: 13px;
+    line-height: 19px;
+    border-radius: 5px;
+}
+
+.od-list
+{
+    border: 1px solid #2d2d2d;
+    background-color: #0a0e12;
+    border-radius: 6px;
+    padding: 40px 20px;
+}
+
+.od-name
+{
+    pointer-events:none;
+}
+
+.od-item:hover{
+    cursor: grab;
+}
+
+.od-item.nested {
+    margin-bottom: 3px;
+}
+
+
+.nested {
+ margin-left: 40px!important; /* Adjust the indentation as needed */
+}
+
+.od-dark .od-c-item
+{
+    border-color: #333333;
+    background: #2525254f;
+}

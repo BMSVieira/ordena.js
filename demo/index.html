@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+   <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+      <meta name="description" content="" />
+      <meta name="author" content="" />
+      <title>Ordena.js - Nested lists made easy!</title>
+
+      <!-- Favicon-->
+      <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+
+      <!-- DEMO ONLY -->
+      <link href="css/styles.css" rel="stylesheet" />
+      <link rel="preconnect" href="https://fonts.googleapis.com">
+      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+      <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200&display=swap" rel="stylesheet">
+
+      <style>
+
+        .pre-pn
+        {
+            font-size: 10pt!important;
+            color: #f565a2!important;
+            background-color: #080c10!important;
+            padding: 19px!important;
+            border-radius: 9px!important;
+        }
+
+        .od-topic
+        {
+            color: #dbdbdb;
+            padding: 6px;
+            background-color: #161f29;
+            border-radius: 6px;
+            margin-bottom: 15px;
+            font-size: 10pt;
+        }
+
+      </style>
+
+      <!-- Ordena Styles -->
+      <link href="../css/style.css" rel="stylesheet" />
+
+   </head>
+
+   <body id="body" style="background-color: #0c1117; color:white;">
+      <!-- Icons Grid-->
+      <section >
+         <div class="container">
+            <div class="row">
+               <div class="col-lg-12" style="border-bottom: 1px solid #1c2939; margin-bottom: 60px;">
+                  <div class="mb-5 mb-lg-0 mb-lg-3" style="text-align:center; margin-top:70px; margin-bottom:28px!important;">
+                     <img src="img/logo_white.png" style="max-width:450px;">
+                     <p style=" font-size: 32pt; color: white; font-family: 'Cairo', sans-serif;">Nested lists made easy!</p>
+                     <a href="https://github.com/BMSVieira/ordena.js" target="_blank" style="cursor:pointer;" class="btn btn-dark  btn-sm ">View on Github</a>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </section>
+      <section>
+         <div class="container" style="min-height:700px;">
+            <div class="row">
+
+               <div class="col-lg-6">
+                  <div class="col-lg-12 od-topic">
+                     Demo:
+                  </div>
+
+                  <div class="od-list od-dark" id="list">
+                     <div class="od-item od-c-item">
+                        <div class="od-name">Item 1</div>
+                     </div>
+                     <div class="od-item od-c-item">
+                        <div class="od-name">Item 2</div>
+                        <div class="od-item od-c-item nested">
+                           <div class="od-name">Item 3</div>
+                        </div>
+                     </div>
+                     
+                     <div class="od-item od-c-item od-disabled">
+                        <div class="od-name">Item 5</div>
+                     </div>
+                     <div class="od-item od-c-item">
+                        <div class="od-name">Item 6</div>
+                     </div>
+                     <div class="od-item od-c-item">
+                        <div class="od-name">Item 7</div>
+                     </div>
+                     <div class="od-item od-c-item">
+                        <div class="od-name">Item 8</div>
+                     </div>
+                   </div>
+
+                  
+               </div>
+
+               <div class="col-lg-3">
+                     <div class="col-lg-12 od-topic">
+                     Serialized JSON Output:
+                     </div>
+                     <pre class="pre-pn" id="serialize"></pre>
+                </div>
+
+                <div class="col-lg-3">
+                     <div class="col-lg-12 od-topic">
+                     Event Console:
+                     </div>
+                     <pre class="pre-pn" id="console" style="overflow:hidden; max-height:300px;"></pre>
+                </div>
+            </div>
+         </div>
+      </section>
+      <script src="../js/ordena.js"></script>
+      <script>
+
+         const demo = new Ordena({
+            selector: "#list",
+            config : {
+                handleThreshold: 0.25
+            },
+            onDragStart: function(){ 
+
+               document.getElementById("console").insertAdjacentHTML("afterbegin", "<p class='pre_started'><b style='color:#ededed'>onDragStart:</b> Drag started.</p>");
+
+            },
+            onDragStop: function(){ 
+                
+               // Serialize
+               let pre = document.getElementById("serialize");
+               pre.innerHTML = "";
+               pre.innerHTML = JSON.stringify(demo.convertToJSON(), null, 2); 
+
+               // Event Console
+               document.getElementById("console").insertAdjacentHTML("afterbegin", "<p class='pre_started'><b style='color:#ededed'>onDragStop:</b> <span style='color:#ffbf00'>Drag stopped.</span></p>");
+            
+            }
+         });
+         
+      </script>
+   </body>
+</html>
