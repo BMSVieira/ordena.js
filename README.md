@@ -70,3 +70,28 @@ document.addEventListener("DOMContentLoaded", function() {
    });
 });
 ```
+
+◼️ Methods:
+-
+
+<b>convertToJSON:</b>
+Outputs serialized list in JSON
+
+```javascript
+demo.convertToJSON();
+```
+
+◼️ Callbacks:
+-
+
+There are multiple callbacks you can use when building a new instance.
+
+ ```javascript
+// Called when drag started.
+onDragStart: function(){ <!-- CODE HERE --> }
+```
+```javascript
+// Called when drag ends.
+onDragStop: function(){ <!-- CODE HERE --> }
+```
+
