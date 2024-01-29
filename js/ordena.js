@@ -133,7 +133,7 @@ class Ordena {
 
         } else if (position === "bottom") {
 
-            if (afterElement.childElementCount >= 1) {
+            if (afterElement.childElementCount > 1) {
 
                 afterElement.appendChild(this.draggedItem);
                 this.draggedItem.classList.add('nested');
@@ -143,11 +143,12 @@ class Ordena {
                 // If dragged item contains nested, it orders it.
                 if(this.draggedItem.classList.contains("nested")){ 
                     currentElement.insertBefore(afterElement, this.draggedItem); 
+                    console.log("ola 1");
                 } else { 
                     
                         // in order to order items that are not in the nested, we must see if both doesnt have nested.
                         if(!this.draggedItem.classList.contains("nested") && !e.target.classList.contains("nested")){ 
-                            currentElement.insertBefore(afterElement, this.draggedItem); 
+                            currentElement.insertBefore(afterElement, this.draggedItem);
                         } else {  }
                 }
             }
