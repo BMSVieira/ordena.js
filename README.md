@@ -9,6 +9,12 @@
 -
 https://bmsvieira.github.io/ordena.js
 
+<br>
+
+<p align="left">
+<img width="600" src="https://raw.githubusercontent.com/BMSVieira/ordena.js/main/demo/img/demogif.gif">
+</p>
+
 Features:
 -
 - 🔧 Fully Customizable
