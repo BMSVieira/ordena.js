@@ -30,13 +30,13 @@ opacity: 0.5;
     cursor: grab;
 }
 
-.od-item.nested {
+.od-item.od-nested {
     margin-bottom: 3px;
 }
 
 
-.nested {
- margin-left: 40px!important; /* Adjust the indentation as needed */
+.od-nested {
+    margin-left: 40px!important;
 }
 
 .od-dark .od-c-item

@@ -120,10 +120,10 @@ class Ordena {
         if (position === "between") {
 
             afterElement.appendChild(this.draggedItem);
-            this.draggedItem.classList.add('nested');
+            this.draggedItem.classList.add('od-nested');
         
-            // If target is the main list, removes nested class
-            if(e.target.classList.contains("od-list")) { this.draggedItem.classList.remove('nested'); }
+            // If target is the main list, removes od-nested class
+            if(e.target.classList.contains("od-list")) { this.draggedItem.classList.remove('od-nested'); }
 
         } else if (position === "top") {
 
@@ -134,31 +134,31 @@ class Ordena {
             if (afterElement.childElementCount > 1) {
 
                 afterElement.appendChild(this.draggedItem);
-                this.draggedItem.classList.add('nested');
+                this.draggedItem.classList.add('od-nested');
 
             } else {
 
-                // If dragged item contains nested, it orders it.
-                if(this.draggedItem.classList.contains("nested")){ 
+                // If dragged item contains od-nested, it orders it.
+                if(this.draggedItem.classList.contains("od-nested")){ 
                     currentElement.insertBefore(afterElement, this.draggedItem); 
                     console.log("ola 1");
                 } else { 
                     
-                        // in order to order items that are not in the nested, we must see if both doesnt have nested.
-                        if(!this.draggedItem.classList.contains("nested") && !e.target.classList.contains("nested")){ 
+                        // in order to order items that are not in the od-nested, we must see if both doesnt have od-nested.
+                        if(!this.draggedItem.classList.contains("od-nested") && !e.target.classList.contains("od-nested")){ 
                             currentElement.insertBefore(afterElement, this.draggedItem);
                         } else {  }
                 }
             }
 
-            // If target is the main list, removes nested class
-            if(e.target.classList.contains("od-list")) { this.draggedItem.classList.remove('nested'); }
+            // If target is the main list, removes od-nested class
+            if(e.target.classList.contains("od-list")) { this.draggedItem.classList.remove('od-nested'); }
 
         } else {
            console.log("null");
            console.log(this.draggedItem);
            this.list.appendChild(this.draggedItem);
-           this.draggedItem.classList.remove('nested');
+           this.draggedItem.classList.remove('od-nested');
         }
 
         this.draggedItem.removeAttribute('data-position');
@@ -183,7 +183,7 @@ class Ordena {
                     children: [],
                 };
 
-                const nestedItems = node.querySelectorAll('.od-item.nested');
+                const nestedItems = node.querySelectorAll('.od-item.od-nested');
                 nestedItems.forEach(nestedItem => {
                     const child = traverse(nestedItem, processedNodes);
                     if (child) {
@@ -197,7 +197,7 @@ class Ordena {
             return null;
         }
 
-        const topLevelItems = this.list.querySelectorAll('.od-item:not(.nested)');
+        const topLevelItems = this.list.querySelectorAll('.od-item:not(.od-nested)');
         topLevelItems.forEach(topLevelItem => {
             const topLevelObj = traverse(topLevelItem);
             if (topLevelObj) {
