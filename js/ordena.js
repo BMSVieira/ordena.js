@@ -117,8 +117,6 @@ class Ordena {
         const currentElement = this.draggedItem.parentElement;
         const position = this.draggedItem.dataset.position;
 
-        console.log(position);
-
         if (position === "between") {
 
             afterElement.appendChild(this.draggedItem);
@@ -181,7 +179,6 @@ class Ordena {
                 processedNodes.add(npUniqueId);
 
                 const obj = {
-                    npUniqueId: npUniqueId,
                     name: node.querySelector('.od-name').innerText,
                     children: [],
                 };
