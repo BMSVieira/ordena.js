@@ -17,6 +17,7 @@ Features:
 - ⚙️ New Engine/Logic
 - ⌨️ JSON Output
 - 📱 Touch support (Coming soon)!
+- 📚 Multi list (Coming soon)!
 
 
 ◼️ Installation (Browser):
