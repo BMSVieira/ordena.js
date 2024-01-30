@@ -102,3 +102,13 @@ onDragStart: function(){ <!-- CODE HERE --> }
 onDragStop: function(){ <!-- CODE HERE --> }
 ```
 
+◼️ Disable Item:
+-
+
+You can disable an item by using class `od-disabled`
+```html
+<div class="od-item od-c-item od-nested od-disabled">
+   <div class="od-name">Item to be disabled</div>
+</div>
+```
+
