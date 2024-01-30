@@ -140,8 +140,12 @@ class Ordena {
 
                 // If dragged item contains od-nested, it orders it.
                 if(this.draggedItem.classList.contains("od-nested")){ 
-                    console.dir(this.draggedItem);
-                    afterElement.insertAdjacentElement("afterend",  this.draggedItem);
+
+                        // check if dragged item is a children and target element is not.
+                        if(this.draggedItem.classList.contains("od-nested") && !e.target.classList.contains("od-nested")){  } else { 
+                            afterElement.insertAdjacentElement("afterend",  this.draggedItem);
+                        }
+
                 } else { 
                     
                         // in order to order items that are not in the od-nested, we must see if both doesnt have od-nested.
