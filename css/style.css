@@ -3,6 +3,14 @@
 opacity: 0.5; 
 }
 
+.od-disabled
+ {
+    background-color: #0a0a0a!important;
+    font-style: italic!important;
+    cursor:not-allowed!important;
+    -webkit-user-drag: none!important;
+ }
+
 .od-item {
     margin-top: 9px;
     padding: 13px 20px;

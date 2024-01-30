@@ -18,7 +18,6 @@ class Ordena {
         this.onDragStart = options.onDragStart || defaults.onDragStart;
         this.onDragStop = options.onDragStop || defaults.onDragStop;
 
-
         this.list.addEventListener('dragstart', this.handleDragStart.bind(this));
         this.list.addEventListener('dragend', this.handleDragEnd.bind(this));
         this.list.addEventListener('dragover', this.handleDragOver.bind(this));
@@ -59,7 +58,7 @@ class Ordena {
             e.target.style.opacity = 0.3;
         }, 0);
 
-        if (typeof this.onDragStart == "function") {
+        if (typeof this.onDragStart == "function" && !this.draggedItem.classList.contains("od-disabled")) {
             this.onDragStart();
         }
     }
@@ -77,7 +76,7 @@ class Ordena {
         let counter = 1;
         items.forEach((item) => {
             const uniqueId = counter++;
-            item.setAttribute('data-npUniqueId', uniqueId.toString());
+            item.setAttribute('data-odUniqueId', uniqueId.toString());
         });
     }
 
@@ -100,6 +99,7 @@ class Ordena {
         return finalCalculations;
     }
 
+
     handleDragOver(e) {
         e.preventDefault();
 
@@ -111,63 +111,70 @@ class Ordena {
     }
 
     handleDrop(e) {
-        e.preventDefault();
-
-        const afterElement = e.target;
-        const currentElement = this.draggedItem.parentElement;
-        const position = this.draggedItem.dataset.position;
-
-        if (position === "between") {
-
-            afterElement.appendChild(this.draggedItem);
-            this.draggedItem.classList.add('od-nested');
         
-            // If target is the main list, removes od-nested class
-            if(e.target.classList.contains("od-list")) { this.draggedItem.classList.remove('od-nested'); }
+        try {
+            
+                e.preventDefault();
+                const afterElement = e.target;
+                const currentElement = this.draggedItem.parentElement;
+                const position = this.draggedItem.dataset.position;
 
-        } else if (position === "top") {
+                // Check if item is disabled
+                if(this.draggedItem.classList.contains("od-disabled") || afterElement.classList.contains("od-disabled")) { throw("This item is disabled."); }
 
-            currentElement.insertBefore(this.draggedItem, afterElement);
+                if (position === "between") {
 
-        } else if (position === "bottom") {
+                    afterElement.appendChild(this.draggedItem);
+                    this.draggedItem.classList.add('od-nested');
+                
+                    // If target is the main list, removes od-nested class
+                    if(e.target.classList.contains("od-list")) { this.draggedItem.classList.remove('od-nested'); }
 
-            if (afterElement.childElementCount > 1) {
+                } else if (position === "top") {
 
-                afterElement.appendChild(this.draggedItem);
-                this.draggedItem.classList.add('od-nested');
+                    currentElement.insertBefore(this.draggedItem, afterElement);
 
-            } else {
+                } else if (position === "bottom") {
 
-                // If dragged item contains od-nested, it orders it.
-                if(this.draggedItem.classList.contains("od-nested")){ 
+                    if (afterElement.childElementCount > 1) {
 
-                        // check if dragged item is a children and target element is not.
-                        if(this.draggedItem.classList.contains("od-nested") && !e.target.classList.contains("od-nested")){  } else { 
-                            afterElement.insertAdjacentElement("afterend",  this.draggedItem);
+                        afterElement.appendChild(this.draggedItem);
+                        this.draggedItem.classList.add('od-nested');
+
+                    } else {
+
+                        // If dragged item contains od-nested, it orders it.
+                        if(this.draggedItem.classList.contains("od-nested")){ 
+
+                                // check if dragged item is a children and target element is not.
+                                if(this.draggedItem.classList.contains("od-nested") && !e.target.classList.contains("od-nested")){  } else { 
+                                    afterElement.insertAdjacentElement("afterend",  this.draggedItem);
+                                }
+
+                        } else { 
+                            
+                                // in order to order items that are not in the od-nested, we must see if both doesnt have od-nested.
+                                if(!this.draggedItem.classList.contains("od-nested") && !e.target.classList.contains("od-nested")){ 
+                                    afterElement.insertAdjacentElement("afterend",  this.draggedItem);
+                                } else {  }
                         }
+                    }
 
-                } else { 
-                    
-                        // in order to order items that are not in the od-nested, we must see if both doesnt have od-nested.
-                        if(!this.draggedItem.classList.contains("od-nested") && !e.target.classList.contains("od-nested")){ 
-                            afterElement.insertAdjacentElement("afterend",  this.draggedItem);
-                        } else {  }
+                    // If target is the main list, removes od-nested class
+                    if(e.target.classList.contains("od-list")) { this.draggedItem.classList.remove('od-nested'); }
+
+                } else {
+                this.list.appendChild(this.draggedItem);
+                this.draggedItem.classList.remove('od-nested');
                 }
-            }
 
-            // If target is the main list, removes od-nested class
-            if(e.target.classList.contains("od-list")) { this.draggedItem.classList.remove('od-nested'); }
+                this.draggedItem.removeAttribute('data-position');
+                if (typeof this.onDragStop == "function") {
+                    this.onDragStop();
+                }
 
-        } else {
-           console.log("null");
-           console.log(this.draggedItem);
-           this.list.appendChild(this.draggedItem);
-           this.draggedItem.classList.remove('od-nested');
-        }
-
-        this.draggedItem.removeAttribute('data-position');
-        if (typeof this.onDragStop == "function") {
-            this.onDragStop();
+        } catch (error) {
+            console.warn("Ordena Warning: " + error);  
         }
     }
 
@@ -177,10 +184,10 @@ class Ordena {
         const result = [];
 
         function traverse(node, processedNodes = new Set()) {
-            const npUniqueId = node.getAttribute('data-npUniqueId');
+            const odUniqueId = node.getAttribute('data-odUniqueId');
 
-            if (!processedNodes.has(npUniqueId)) {
-                processedNodes.add(npUniqueId);
+            if (!processedNodes.has(odUniqueId)) {
+                processedNodes.add(odUniqueId);
 
                 const obj = {
                     name: node.querySelector('.od-name').innerText,
