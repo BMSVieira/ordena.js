@@ -37,6 +37,17 @@
             font-size: 10pt;
         }
 
+        .deleteOrdena
+        {
+            padding: 15px 10px;
+            background-color: #270b0b;
+            border-radius: 50px;
+            text-align: center;
+            border: 1px solid #8f1a1a;
+            color: #8f1a1a;
+            font-style: italic;
+        }
+
       </style>
 
       <!-- Ordena Styles -->
@@ -67,8 +78,11 @@
                   <div class="col-lg-12 od-topic">
                      Demo:
                   </div>
-
+                  <div class="col-lg-12" style="margin-bottom:10px;">
+                     <button type="button" class="btn btn-outline-secondary btn-sm" onclick="NewItem();">➕ New Item</button>
+                  </div>
                   <div class="od-list od-dark" id="list">
+                     <div class="deleteOrdena od-delete">Drag items here to delete</div>
                         <div class="od-item od-c-item">
                            <div class="od-name">Item 1</div>
                         </div>
@@ -87,15 +101,20 @@
                         <div class="od-item od-c-item od-disabled">
                            <div class="od-name">Item 5 (Disabled)</div>
                         </div>
+
                         <div class="od-item od-c-item">
                            <div class="od-name">Item 6</div>
                         </div>
                         <div class="od-item od-c-item">
                            <div class="od-name">Item 7</div>
                         </div>
+                        <div class="od-item od-c-item od-delete">
+                           <div class="od-name"> 🗑 This item can delete other items, drag them here! </div>
+                        </div>
                         <div class="od-item od-c-item">
                            <div class="od-name">Item 8</div>
                         </div>
+                        
                    </div>
 
                </div>
@@ -118,11 +137,19 @@
       </section>
       <script src="../js/ordena.js"></script>
       <script>
+               
+         var pre = document.getElementById("serialize");
 
          const demo = new Ordena({
             selector: "#list",
             config : {
-                handleThreshold: 0.25
+                handleThreshold: 0.25,
+                deleteItems : {
+                  class: "od-delete", // Class wich elements must have to be allowed to delete a item
+                  onComplete: function(){  
+                     document.getElementById("console").insertAdjacentHTML("afterbegin", "<p class='pre_started'><b style='color:#ededed'>onComplete:</b> <span style='color:#00c2ff'>Item Deleted.</span></p>"); 
+                  }
+                },
             },
             onDragStart: function(){ 
 
@@ -132,7 +159,7 @@
             onDragStop: function(){ 
                 
                // Serialize
-               let pre = document.getElementById("serialize");
+
                pre.innerHTML = "";
                pre.innerHTML = JSON.stringify(demo.convertToJSON(), null, 2); 
 
@@ -141,6 +168,16 @@
             
             }
          });
+
+         // Function to add a new item
+         function NewItem()
+         {
+            let newElement = `<div class="od-item od-c-item"> <div class="od-name">New Item</div></div>`;
+            document.getElementById("list").insertAdjacentHTML("beforeend", newElement);
+
+            // Refresh List
+            demo.refresh();
+         }
          
       </script>
    </body>

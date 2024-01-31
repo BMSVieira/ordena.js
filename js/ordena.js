@@ -4,7 +4,11 @@ class Ordena {
         const defaults = {
             selector: 'defaultId',
             config: {
-                handleThreshold: 0.25
+                handleThreshold: 0.25,
+                deleteItems : {
+                    class: "",
+                    onComplete: function(){}
+                  },
             },
             onDragStart: function() {},
             onDragStop: function() {}
@@ -15,8 +19,10 @@ class Ordena {
         this.list = document.querySelector(this.selector);
         this.draggedItem = null;
         this.handleThreshold = options.config.handleThreshold || defaults.config.handleThreshold
+        this.deleteClass = options.config.deleteItems.class || defaults.config.deleteItems.class
         this.onDragStart = options.onDragStart || defaults.onDragStart;
         this.onDragStop = options.onDragStop || defaults.onDragStop;
+        this.onDeleteComplete = options.config.deleteItems.onComplete || defaults.config.deleteItems.onComplete
 
         this.list.addEventListener('dragstart', this.handleDragStart.bind(this));
         this.list.addEventListener('dragend', this.handleDragEnd.bind(this));
@@ -30,6 +36,7 @@ class Ordena {
         this.setDraggable();
     }
 
+    // Set draggable attribute to all elements
     setDraggable()
     {
         let isDragging = false;
@@ -52,6 +59,7 @@ class Ordena {
         });
     }
 
+    // When drag starts
     handleDragStart(e) {
         this.draggedItem = e.target;
         setTimeout(() => {
@@ -63,6 +71,7 @@ class Ordena {
         }
     }
 
+    // When drag ends
     handleDragEnd(e) {
         setTimeout(() => {
             e.target.style.opacity = 1;
@@ -70,6 +79,7 @@ class Ordena {
         }, 0);
     }
 
+    // Add identifier to all items
     addUniqueIdentifier() {
         const items = this.list.querySelectorAll('.od-item');
 
@@ -80,6 +90,7 @@ class Ordena {
         });
     }
 
+    // Get real position
     calculateLimits(target, vertical) {
         const elementHeight = target.clientHeight;
         let finalCalculations = null;
@@ -99,7 +110,7 @@ class Ordena {
         return finalCalculations;
     }
 
-
+    // When element is dragged around
     handleDragOver(e) {
         e.preventDefault();
 
@@ -110,8 +121,8 @@ class Ordena {
         this.draggedItem.dataset.position = position;
     }
 
+    // When element is dropped
     handleDrop(e) {
-        
         try {
             
                 e.preventDefault();
@@ -121,7 +132,22 @@ class Ordena {
 
                 // Check if item is disabled
                 if(this.draggedItem.classList.contains("od-disabled") || afterElement.classList.contains("od-disabled")) { throw("This item is disabled."); }
+                // Check if target element is part of ordena list or if it is a delete box
+                if(!afterElement.classList.contains("od-item") &&
+                !afterElement.classList.contains(this.deleteClass) &&
+                !afterElement.classList.contains("od-list")){ throw("This is not an Ordena item."); } 
 
+                // handle delete boxes, check if target element is a delete box
+                if(afterElement.classList.contains(this.deleteClass)) { 
+                    
+                    if (typeof this.onDeleteComplete == "function") {
+                        this.onDeleteComplete();
+                        this.draggedItem.remove()
+                    }
+                    return;
+                }
+              
+                // Check position
                 if (position === "between") {
 
                     afterElement.appendChild(this.draggedItem);
@@ -217,5 +243,14 @@ class Ordena {
         });
 
         return result;
+    }
+
+    // Refreshes all the item attributes
+    refresh()
+    {
+        // Refresh unique ID
+        this.addUniqueIdentifier();
+        // Refresh draggable elements
+        this.setDraggable();
     }
 }
