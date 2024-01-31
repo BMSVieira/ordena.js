@@ -23,7 +23,6 @@ Features:
 - ⚙️ New Engine/Logic
 - ⌨️ JSON Output
 - 📱 Touch support (Coming soon)!
-- 📚 Multi list (Coming soon)!
 
 
 ◼️ Installation (Browser):
@@ -74,6 +73,7 @@ Features:
 document.addEventListener("DOMContentLoaded", function() {
    const demo = new Ordena({
       selector: "#list"
+      // More configs...
    });
 });
 ```
@@ -86,6 +86,14 @@ Outputs serialized list in JSON
 
 ```javascript
 demo.convertToJSON();
+```
+
+<b>refresh:</b>
+Refresh all draggable properties and defines new uniqueIds to all items.<br>
+Must be called whenever a new item is added to the list.
+
+```javascript
+demo.refresh();
 ```
 
 ◼️ Callbacks:
@@ -101,4 +109,30 @@ onDragStart: function(){ <!-- CODE HERE --> }
 // Called when drag ends.
 onDragStop: function(){ <!-- CODE HERE --> }
 ```
+
+◼️ Disable Item:
+-
+
+You can disable an item by using class `od-disabled`<br>
+This item will not be able to dragged or moved.
+```html
+<div class="od-item od-c-item od-nested od-disabled">
+   <div class="od-name">Item to be disabled</div>
+</div>
+```
+
+◼️ Drag to delete:
+-
+
+You can have multiple elements that are allowed to delete an item, as long as they share the same class. (See demo)<br>
+To define a delete-class, it must be done when instantiating Ordena, in the config property.
+```javascript
+config : {
+    deleteItems : {
+      class: "your-delete-class", // Class wich elements must have to be allowed to delete an item
+      onComplete: function(){ <!-- CODE HERE --> }
+    }
+}
+```
+All elements allowed to delete items must be inside the `od-list` element, and everything dragged into them will be `remove()`.
 
